@@ -75,7 +75,7 @@ services:
       NOMINATIM_PASSWORD: "very_secure_password"
       IMPORT_WIKIPEDIA: "false"
     ports:
-      - "8081:8080" # For direct access to Nominatim (if needed)
+      - "8081:8080" # Expose Nominatim on port 8081
     volumes:
       - nominatim-data:/var/lib/postgresql/16/main
       - nominatim-flatnode:/nominatim/flatnode
