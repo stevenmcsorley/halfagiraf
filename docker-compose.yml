@@ -27,7 +27,7 @@ services:
 
   remix:
     build: .
-    container_name: remix_app
+    container_name: halfagiraf_remix_app
     restart: always
     env_file:
       - .env
@@ -35,18 +35,15 @@ services:
       - db
     labels:
       - "traefik.enable=true"
-      # Primary (canonical) router for halfagiraf.com
+      # Primary router for halfagiraf.com
       - "traefik.http.routers.remix.rule=Host(`halfagiraf.com`)"
       - "traefik.http.routers.remix.entrypoints=web"
-      - "traefik.http.routers.web-secure.tls=true"
+      - "traefik.http.routers.remix.tls=true"
       - "traefik.http.services.remix.loadbalancer.server.port=3000"
-
-      # Additional router for www.halfagiraf.com that applies a 301 redirect
+      # Additional router for www.halfagiraf.com (301 redirect)
       - "traefik.http.routers.remix-www.rule=Host(`www.halfagiraf.com`)"
       - "traefik.http.routers.remix-www.entrypoints=web"
       - "traefik.http.routers.remix-www.middlewares=redirect-to-nonwww"
-
-      # Define the redirect middleware to send a permanent (301) redirect to the canonical domain.
       - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.regex=^https?://www\\.halfagiraf\\.com(.*)"
       - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.replacement=https://halfagiraf.com$1"
       - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.permanent=true"
@@ -55,7 +52,7 @@ services:
 
   db:
     image: postgres:15-alpine
-    container_name: pg_db
+    container_name: halfagiraf_pg_db
     restart: always
     environment:
       POSTGRES_USER: mydbuser
@@ -74,7 +71,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: pg_admin
+    container_name: halfagiraf_pg_admin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
@@ -93,7 +90,7 @@ services:
 
   nominatim:
     image: mediagis/nominatim:4.5
-    container_name: nominatim
+    container_name: halfagiraf_nominatim
     restart: always
     environment:
       # Use the United Kingdom extract (1.8 GB)
@@ -102,7 +99,7 @@ services:
       NOMINATIM_PASSWORD: "very_secure_password"
       IMPORT_WIKIPEDIA: "false"
     ports:
-      - "8081:8080" # Expose Nominatim on port 8081 (or your preferred port)
+      - "8081:8080" # Expose Nominatim on port 8081
     volumes:
       - nominatim-data:/var/lib/postgresql/16/main
       - nominatim-flatnode:/nominatim/flatnode
