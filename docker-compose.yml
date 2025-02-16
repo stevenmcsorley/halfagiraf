@@ -17,7 +17,7 @@ services:
       - "--entrypoints.websecure.address=:443"
     ports:
       - "80:80"
-      - "443:443"
+      - "444:443"
       - "8082:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
