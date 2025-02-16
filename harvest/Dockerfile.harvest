@@ -1,0 +1,26 @@
+FROM python:3.10-slim
+
+# Install system dependencies and supervisor
+RUN apt-get update && \
+    apt-get install -y supervisor && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy and install Python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy your Python scripts into the container
+COPY harvest.py ./
+COPY update_extra_content.py ./
+COPY enrich_origins.py ./
+
+# Copy the Supervisor configuration file
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Optionally expose any necessary ports (if applicable)
+# EXPOSE 80
+
+# Start Supervisor in the foreground
+CMD ["supervisord", "-n"]

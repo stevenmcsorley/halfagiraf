@@ -1,0 +1,23 @@
+{
+  "discoverUniqueNames": "探索独特的宝宝名字",
+  "quickSearch": "快速搜索",
+  "search": "搜索",
+  "orTry": "或者试试",
+  "randomName": "随机名字",
+  "browseByOrigin": "按起源浏览",
+  "totalNames": "总名字数",
+  "averageLength": "平均长度",
+  "chars": "个字符",
+  "distinctOrigins": "不同起源",
+  "highestCount": "最高计数",
+  "withMeaning": "有意义的名字",
+  "withoutMeaning": "无意义的名字",
+  "famousHistoric": "名人 / 历史人物",
+  "interestingFacts": "有趣事实",
+  "enrichedRecords": "已丰富记录",
+  "noEnrichedRecords": "没有丰富的记录",
+  "top10Origins": "前10个起源",
+  "longestNames": "最长的名字 (前3)",
+  "shortestNames": "最短的名字 (前3)",
+  "top10WordsInMeanings": "含义中最常见的前10个单词"
+}

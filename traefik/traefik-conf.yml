@@ -1,0 +1,31 @@
+---
+api:
+  dashboard: true
+  debug: true
+
+serversTransport:
+  insecureSkipVerify: true
+
+entryPoints:
+  web:
+    address: "80"
+  websecure:
+    address: "443"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    watch: true
+    network: proxy
+  file:
+    directory: /configurations/
+    watch: true
+certificatesResolvers:
+  dnsChallenge:
+    acme:
+      email: smcsorl@gmail.com
+      storage: /acme.json
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 0

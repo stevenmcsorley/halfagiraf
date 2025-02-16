@@ -1,0 +1,23 @@
+{
+  "discoverUniqueNames": "Discover Unique Baby Names",
+  "quickSearch": "Quick Search",
+  "search": "Search",
+  "orTry": "Or try a",
+  "randomName": "Random Name",
+  "browseByOrigin": "Browse by Origin",
+  "totalNames": "Total Names",
+  "averageLength": "Average length",
+  "chars": "chars",
+  "distinctOrigins": "Distinct Origins",
+  "highestCount": "Highest count",
+  "withMeaning": "With Meaning",
+  "withoutMeaning": "Without meaning",
+  "famousHistoric": "Famous People / Historic Figures",
+  "interestingFacts": "Interesting Facts",
+  "enrichedRecords": "Enriched Records",
+  "noEnrichedRecords": "No enriched records",
+  "top10Origins": "Top 10 Origins",
+  "longestNames": "Longest Names (top 3)",
+  "shortestNames": "Shortest Names (top 3)",
+  "top10WordsInMeanings": "Top 10 Words in Meanings"
+}
