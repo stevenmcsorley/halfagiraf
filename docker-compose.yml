@@ -35,11 +35,21 @@ services:
       - db
     labels:
       - "traefik.enable=true"
-      # Primary (canonical) router for local testing using localhost.halfagiraf
-      - "traefik.http.routers.remix.rule=Host(`localhost.halfagiraf`)"
+      # Primary (canonical) router for halfagiraf.com
+      - "traefik.http.routers.remix.rule=Host(`halfagiraf.com`)"
       - "traefik.http.routers.remix.entrypoints=web"
-      # - "traefik.http.routers.remix-secure.tls=true"  # Disabled for local testing
+      - "traefik.http.routers.web-secure.tls=true"
       - "traefik.http.services.remix.loadbalancer.server.port=3000"
+
+      # Additional router for www.halfagiraf.com that applies a 301 redirect
+      - "traefik.http.routers.remix-www.rule=Host(`www.halfagiraf.com`)"
+      - "traefik.http.routers.remix-www.entrypoints=web"
+      - "traefik.http.routers.remix-www.middlewares=redirect-to-nonwww"
+
+      # Define the redirect middleware to send a permanent (301) redirect to the canonical domain.
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.regex=^https?://www\\.halfagiraf\\.com(.*)"
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.replacement=https://halfagiraf.com$1"
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.permanent=true"
     networks:
       - web
 
@@ -75,7 +85,7 @@ services:
       - pgadmin_data:/var/lib/pgadmin
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.localhost.halfagiraf`)"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.halfagiraf.com`)"
       - "traefik.http.routers.pgadmin.entrypoints=web"
       - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
     networks:
