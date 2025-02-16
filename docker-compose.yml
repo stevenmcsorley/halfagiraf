@@ -111,8 +111,7 @@ services:
 
 networks:
   web:
-    name: web
-    driver: bridge
+    external: true
 
 volumes:
   pg_data:
