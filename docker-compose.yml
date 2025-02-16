@@ -1,6 +1,30 @@
 version: "3.8"
 
 services:
+  traefik:
+    image: traefik:v2.9
+    container_name: halfagiraf_traefik
+    restart: always
+    command:
+      - "--api.insecure=false"
+      - "--api.dashboard=false"
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.filename=/dynamic.yml"
+      - "--providers.docker.network=halfagiraf_net"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8082:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./dynamic.yml:/dynamic.yml:ro
+    networks:
+      - halfagiraf_net
+
   remix:
     build: .
     container_name: halfagiraf_remix_app
@@ -24,7 +48,7 @@ services:
       - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.replacement=https://halfagiraf.com$1"
       - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.permanent=true"
     networks:
-      - web
+      - halfagiraf_net
 
   db:
     image: postgres:15-alpine
@@ -38,7 +62,7 @@ services:
       - pg_data:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
     networks:
-      - web
+      - halfagiraf_net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U mydbuser -d halfagiraf_db"]
       interval: 5s
@@ -62,7 +86,7 @@ services:
       - "traefik.http.routers.pgadmin.entrypoints=web"
       - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
     networks:
-      - web
+      - halfagiraf_net
 
   nominatim:
     image: mediagis/nominatim:4.5
@@ -80,11 +104,12 @@ services:
       - nominatim-data:/var/lib/postgresql/16/main
       - nominatim-flatnode:/nominatim/flatnode
     networks:
-      - web
+      - halfagiraf_net
 
 networks:
-  web:
-    external: true
+  halfagiraf_net:
+    name: halfagiraf_net
+    driver: bridge
 
 volumes:
   pg_data:
